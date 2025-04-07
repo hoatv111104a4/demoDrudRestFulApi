@@ -1,26 +1,44 @@
 package com.example.demoCrudRestFulApi.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "hoc_sinh")
+@Table(name = "hoc_sinh" )
 public class HocSinh {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+
     private Long id;
-    @Column(name = "ma")
+    @Column(name = "ma", unique = true, nullable = false)
+    @Size(min = 3, max = 50, message = "Vui lòng nhập mã nằm từ 3-40 kí tự")
+    @NotBlank(message = "Mã học sinh không được để trống")
     private String maHocSinh;
-    @Column(name = "ten")
+
+    @Column(name = "ten", nullable = false)
+    @Size(min = 2, max = 50, message = "Vui lòng nhập tên nằm từ 2-50 kí tự")
+    @NotBlank(message = "Tên học sinh không được để trống")
     private String tenHocSinh;
-    @Column(name = "nam_sinh")
+
+    @Column(name = "nam_sinh", nullable = false)
+    @Past(message = "Năm sinh phải là một ngày trong quá khứ")
+    @NotNull(message = "Năm sinh không được để trống")
     private Date namSinh;
-    @Column(name = "email")
+
+    @Column(name = "email", unique = true, nullable = false)
+    @Pattern(
+            regexp = "^[a-zA-Z0-9._%+-]+@gmail\\.com$",
+            message = "Vui lòng nhập email có định dạng  @gmail.com")
+    @NotBlank(message = "Email không được để trống")
     private String email;
-    @Column(name = "gioi_tinh")
+
+    @Column(name = "gioi_tinh", nullable = false)
+    @NotNull(message = "Vui lòng chọn giới tính")
     private Boolean gioiTinh;
+
     @Column(name = "trang_thai")
     private Boolean trangThai;
 

@@ -3,6 +3,7 @@ package com.example.demoCrudRestFulApi.controller;
 import com.example.demoCrudRestFulApi.entity.HocSinh;
 import com.example.demoCrudRestFulApi.entity.NhanVien;
 import com.example.demoCrudRestFulApi.service.HocSinhService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class HocSinhController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addHocSinh(@RequestBody HocSinh hocSinh) {
+    public ResponseEntity<?> addHocSinh(@Valid @RequestBody HocSinh hocSinh) {
         try {
             HocSinh saveHocSinh = hocSinhService.save(hocSinh);
             return ResponseEntity.status(HttpStatus.CREATED).body(saveHocSinh);
@@ -48,7 +49,7 @@ public class HocSinhController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateHocSinh(@PathVariable Long id,@RequestBody HocSinh updateHocSinh){
+    public ResponseEntity<?> updateHocSinh( @PathVariable Long id,@Valid @RequestBody HocSinh updateHocSinh){
         Optional<HocSinh> existinghocSinh = hocSinhService.findByIdHocSinh(id);
         if (existinghocSinh.isPresent()){
             HocSinh hocSinh = existinghocSinh.get();

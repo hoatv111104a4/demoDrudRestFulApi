@@ -1,8 +1,12 @@
 package com.example.demoCrudRestFulApi.controller;
 
 import com.example.demoCrudRestFulApi.dto.NhanVienDto;
+import com.example.demoCrudRestFulApi.entity.HocSinh;
 import com.example.demoCrudRestFulApi.entity.NhanVien;
 import com.example.demoCrudRestFulApi.service.NhanVienService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,6 +77,20 @@ public class NhanVienController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy nhân viên có ID: " + id);
         }
+    }
+
+    @GetMapping("/phan-trang/hien-thi")
+    public ResponseEntity<Page<NhanVien>> pageNhanVien(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "2") int size){
+        Pageable pageable = PageRequest.of(page,size);
+        Page<NhanVien> nhanVienPage = nhanVienService.pageNhanVien(pageable);
+        return ResponseEntity.ok(nhanVienPage);
+    }
+
+    @GetMapping("/phan-trang/tim-kiem")
+    public ResponseEntity<Page<NhanVien>> pageNhanVien(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "2") int size,@RequestParam(required = false) String tenNhanVien){
+        Pageable pageable = PageRequest.of(page,size);
+        Page<NhanVien> nhanVienPage2 = nhanVienService.pageNhanVien2(tenNhanVien,pageable);
+        return ResponseEntity.ok(nhanVienPage2);
     }
 
 }
